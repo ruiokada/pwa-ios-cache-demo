@@ -28,7 +28,9 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js');
 }
 if (window.navigator.standalone == true) {
-    fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ app_already_installed: true }) }).then(() => { });
+    fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ app_already_installed: true }) }).then(() => {
+        document.querySelector("#installed").style = "display: block";
+    });
     document.querySelector("#not_in_app").style = "display: none";
 } else {
     fetch(CACHE_URL).then(response => response.json()).then(data => {
