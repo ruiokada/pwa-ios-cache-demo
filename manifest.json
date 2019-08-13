@@ -1,0 +1,12 @@
+{
+    "start_url": "/?utm_source=homescreen&utm_medium=Addtohomescreen&utm_campaign=homescreen",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "serviceworker": {
+        "src": "/sw.js",
+        "scope": "/"
+    },
+    "name": "PWA",
+    "short_name": "PWA"
+}
