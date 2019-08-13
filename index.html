@@ -50,7 +50,10 @@ function getToken() {
         console.log("GOT:", JSON.stringify(json));
     });
 }
-document.querySelector("#save").onclick = generateToken;
+document.querySelector("#save").onclick = function(){
+    document.querySelector("#posted_cache").innerHTML += " WOO!";
+    generateToken();
+}
 </script>
 <script async="" src="/pwacompat.js"></script>
 </body>
