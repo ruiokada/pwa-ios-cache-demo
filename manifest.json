@@ -4,7 +4,7 @@
     "display": "standalone",
     "orientation": "portrait",
     "serviceworker": {
-        "src": "/sw.js",
+        "src": "sw.js",
         "scope": "/"
     },
     "name": "PWA",
