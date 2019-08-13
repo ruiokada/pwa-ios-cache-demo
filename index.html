@@ -19,7 +19,7 @@
 <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-<div id="installed" style="display: none">You Installed!</div>
+<div id="installed" style="display: none">You Installed! <button id="save">Commemorate</button></div>
 <div>You're <span id="not_in_app">not </span>in the app!</div>
 <div id="in_app" style="display: none">You're definitely in the app!</div>
 <script type="text/javascript">
@@ -40,12 +40,12 @@ if (window.navigator.standalone == true) {
     });
     document.querySelector("#in_app").style = "display: block";
 }
+document.querySelector("#in_app").onclick = generateToken;
 function generateToken() {
     fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ app_already_installed: true }) }).then(() => {
         console.log("SAVED");
     });
 }
-
 function getToken() {
     fetch(CACHE_URL).then(response => response.json()).then(json => {
         console.log("GOT:", JSON.stringify(json));
