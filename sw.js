@@ -19,15 +19,7 @@ self.addEventListener('fetch', function (event) {
           cache.put(CACHE_URL, new Response(JSON.stringify(body)));
         });
       });
-      return new Response('{}');
-    } else if (method === 'DELETE') {
-      event.respondWith(
-        caches.open(CACHE_URL).then(function (cache) {
-          return cache.delete(CACHE_URL).then(function (response) {
-            return response || new Response('{}');;
-          }) || new Response('{}');
-        })
-      );
+      event.respondWith(new Response('{}'));
     } else {
       event.respondWith(
         caches.open(CACHE_URL).then(function (cache) {

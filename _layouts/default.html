@@ -42,7 +42,8 @@
         document.querySelector("#standalone").style = "display: block";
     } else {
         fetch_pwa_check_token(function(data){
-            if('pwa_in_use' in data){
+            console.log(data);
+            if('pwa_last_used' in data && data['pwa_last_used']){
                 document.querySelector("#used").style = "display: block";
             }
         });
@@ -53,7 +54,7 @@
                 console.log("Saved token!");
             };
         }
-        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ pwa_in_use: true }) }).then(callback);
+        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ pwa_last_used: new Date() }) }).then(callback);
     }
     function fetch_pwa_check_token(callback) {
         if( typeof(callback) === 'undefined' ) {
@@ -69,7 +70,7 @@
                 console.log("Deleted.");
             };
         }
-        fetch(CACHE_URL, { method: "DELETE" }).then(callback);
+        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ pwa_last_used: "" }) }).then(callback);
     }
     document.querySelector("#save").onclick = generate_pwa_check_token;
     document.querySelector("#fetch").onclick = function(){
