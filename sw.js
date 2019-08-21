@@ -20,6 +20,14 @@ self.addEventListener('fetch', function (event) {
         });
       });
       return new Response('{}');
+    } else if (method === 'DELETE') {
+      event.respondWith(
+        caches.open(CACHE_URL).then(function (cache) {
+          return cache.delete(CACHE_URL).then(function (response) {
+            return response || new Response('{}');;
+          }) || new Response('{}');
+        })
+      );
     } else {
       event.respondWith(
         caches.open(CACHE_URL).then(function (cache) {

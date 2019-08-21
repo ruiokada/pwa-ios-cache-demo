@@ -1,59 +1,7 @@
-<html>
-<head>
-<title>WP PWA Title</title>
-<meta name="description" content="">
-
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="application-name" content="WP PWA">
-<meta name="apple-mobile-web-app-title" content="WP PWA Title">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="msapplication-starturl"
-    content="/?utm_source=homescreen&utm_medium=Addtohomescreen&utm_campaign=homescreen">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-<meta name="browsermode" content="application">
-<meta name="x5-page-mode" content="app">
-
-<meta name="theme-color" content="#ffffff">
-<link rel="manifest" href="/manifest.json">
-</head>
-<body>
-<button id="save">Tell the browser you've installed!</button>
-<div id="installed" style="display: none">The browser knows you've installed a PWA!</div>
-<div id="posted_cache" style="display: none">You've told the browser a PWA was installed at <span id="time"></span>!</div>
-<div>You ARE <span id="not_in_app">NOT </span>in the app!</div>
-<script type="text/javascript">
-const CACHE_URL = '/app_already_installed';
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-}
-if (window.navigator.standalone == true) {
-    fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ app_already_installed: true }) }).then(() => {
-        document.querySelector("#posted_cache").style = "display: block";
-        document.querySelector("#time").innerHTML = new Date();
-    });
-    document.querySelector("#not_in_app").style = "display: none";
-} else {
-    fetch(CACHE_URL).then(response => response.json()).then(data => {
-        if ('app_already_installed' in data) {
-            document.querySelector("#installed").style = "display: block";
-        }
-    });
-}
-function generateToken() {
-    fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ app_already_installed: true }) }).then(() => {
-        console.log("SAVED");
-        document.querySelector("#time").innerHTML = new Date();
-    });
-}
-function getToken() {
-    fetch(CACHE_URL).then(response => response.json()).then(json => {
-        console.log("GOT:", JSON.stringify(json));
-    });
-}
-document.querySelector("#save").onclick = generateToken;
-</script>
-<script async="" src="/pwacompat.js"></script>
-</body>
-</html>
+---
+layout: default
+---
+<ul>
+    <li><a href="/posts/1.html">Post 1</a></li>
+    <li><a href="/posts/2.html">Post 2</a></li>
+</ul>
