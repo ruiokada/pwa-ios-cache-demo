@@ -24,7 +24,7 @@ self.addEventListener('fetch', function (event) {
       event.respondWith(
         caches.open(CACHE_URL).then(function (cache) {
           return cache.delete(CACHE_URL).then(function (response) {
-            return response || new Response('{}');;
+            return response || new Response('{}');
           }) || new Response('{}');
         })
       );
@@ -32,7 +32,7 @@ self.addEventListener('fetch', function (event) {
       event.respondWith(
         caches.open(CACHE_URL).then(function (cache) {
           return cache.match(CACHE_URL).then(function (response) {
-            return response || new Response('{}');;
+            return response || new Response('{}');
           }) || new Response('{}');
         })
       );

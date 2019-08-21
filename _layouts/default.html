@@ -21,7 +21,10 @@
 <body>
 <a href="/">Home</a>
 {{ content }}
-<button id="save">Tell the browser you've installed!</button>
+<button id="save">Generate Token</button>
+<button id="fetch">Fetch Token</button>
+<button id="delete">Delete Token</button>
+<div id="fetch_contents"></div>
 <div id="used" style="display: none">The browser knows you've used a PWA!</div>
 <div id="posted_cache" style="display: none">You've told the browser a PWA was in use at <span id="time"></span>!
 </div>
@@ -32,35 +35,57 @@
         navigator.serviceWorker.register('/sw.js');
     }
     if (window.navigator.standalone == true) {
-        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ pwa_in_use: true }) }).then(() => {
+        generate_pwa_check_token(function(){
             document.querySelector("#posted_cache").style = "display: block";
             document.querySelector("#time").innerHTML = new Date();
         });
         document.querySelector("#standalone").style = "display: block";
     } else {
-        fetch(CACHE_URL).then(response => response.json()).then(data => {
-            if ('pwa_in_use' in data) {
+        fetch_pwa_check_token(function(data){
+            if('pwa_in_use' in data){
                 document.querySelector("#used").style = "display: block";
             }
         });
     }
-    function generateToken() {
-        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ pwa_in_use: true }) }).then(() => {
-            console.log("SAVED");
-            document.querySelector("#time").innerHTML = new Date();
+    function generate_pwa_check_token(callback) {
+        if (typeof (callback) === 'undefined') {
+            callback = function() {
+                console.log("Saved token!");
+            };
+        }
+        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ pwa_in_use: true }) }).then(callback);
+    }
+    function fetch_pwa_check_token(callback) {
+        if( typeof(callback) === 'undefined' ) {
+            callback = function(data) {
+                console.log("Fetched:", JSON.stringify(data));
+            };
+        }
+        fetch(CACHE_URL).then(response => response.json()).then(callback);
+    }
+    function delete_pwa_check_token(callback) {
+        if (typeof (callback) === 'undefined') {
+            callback = function () {
+                console.log("Deleted.");
+            };
+        }
+        fetch(CACHE_URL, { method: "POST", body: JSON.stringify({ delete: true }) }).then(callback);
+    }
+    document.querySelector("#save").onclick = generate_pwa_check_token;
+    document.querySelector("#fetch").onclick = function(){
+        fetch_pwa_check_token(function(data){
+            console.log("Fetched:", JSON.stringify(data));
+            document.querySelector("#fetch_contents").innerHTML = JSON.stringify(data);
+        });
+    };
+    document.querySelector("#delete").onclick = function(){
+        delete_pwa_check_token(function(){
+            fetch_pwa_check_token(function (data) {
+                console.log("Fetched:", JSON.stringify(data));
+                document.querySelector("#fetch_contents").innerHTML = JSON.stringify(data);
+            });
         });
     }
-    function getToken() {
-        fetch(CACHE_URL).then(response => response.json()).then(json => {
-            console.log("GOT:", JSON.stringify(json));
-        });
-    }
-    function deleteToken() {
-        fetch(CACHE_URL, { method: "DELETE" }).then(response => response.json()).then(json => {
-            console.log("DELETED");
-        });
-    }
-    document.querySelector("#save").onclick = generateToken;
 </script>
 <script async="" src="/pwacompat.js"></script>
 </body>
