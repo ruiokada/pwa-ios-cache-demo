@@ -22,10 +22,10 @@
 <a href="/">Home</a>
 {{ content }}
 <button id="save">Tell the browser you've installed!</button>
-<div id="installed" style="display: none">The browser knows you've installed a PWA!</div>
-<div id="posted_cache" style="display: none">You've told the browser a PWA was installed at <span id="time"></span>!
+<div id="used" style="display: none">The browser knows you've used a PWA!</div>
+<div id="posted_cache" style="display: none">You've told the browser a PWA was in use at <span id="time"></span>!
 </div>
-<div>You ARE <span id="not_in_app">NOT </span>in the app!</div>
+<div id="standalone" style="display: none">Standalone detected</div>
 <script type="text/javascript">
     const CACHE_URL = '/pwa_in_use';
     if ('serviceWorker' in navigator) {
@@ -36,11 +36,11 @@
             document.querySelector("#posted_cache").style = "display: block";
             document.querySelector("#time").innerHTML = new Date();
         });
-        document.querySelector("#not_in_app").style = "display: none";
+        document.querySelector("#standalone").style = "display: block";
     } else {
         fetch(CACHE_URL).then(response => response.json()).then(data => {
             if ('pwa_in_use' in data) {
-                document.querySelector("#installed").style = "display: block";
+                document.querySelector("#used").style = "display: block";
             }
         });
     }
@@ -50,7 +50,7 @@
             document.querySelector("#time").innerHTML = new Date();
         });
     }
-    function getToken(callback) {
+    function getToken() {
         fetch(CACHE_URL).then(response => response.json()).then(json => {
             console.log("GOT:", JSON.stringify(json));
         });
