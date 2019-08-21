@@ -1,4 +1,4 @@
-const CACHE_URL = '/app_already_installed';
+const CACHE_URL = '/pwa_in_use';
 
 self.addEventListener('activate', event => {
   event.waitUntil(clients.claim());
