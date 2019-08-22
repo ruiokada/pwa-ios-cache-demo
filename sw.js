@@ -1,4 +1,4 @@
-const CACHE_URL = '/pwa_in_use';
+const PWA_CHECK_CACHE_URL = '/pwa_check';
 
 self.addEventListener('activate', event => {
   event.waitUntil(clients.claim());
@@ -12,18 +12,18 @@ self.addEventListener('fetch', function (event) {
       method,
     },
   } = event;
-  if (url.match(CACHE_URL)) {
+  if (url.match(PWA_CHECK_CACHE_URL)) {
     if (method === 'POST') {
       request.json().then(body => {
-        caches.open(CACHE_URL).then(function (cache) {
-          cache.put(CACHE_URL, new Response(JSON.stringify(body)));
+        caches.open(PWA_CHECK_CACHE_URL).then(function (cache) {
+          cache.put(PWA_CHECK_CACHE_URL, new Response(JSON.stringify(body)));
         });
       });
       event.respondWith(new Response('{}'));
     } else {
       event.respondWith(
-        caches.open(CACHE_URL).then(function (cache) {
-          return cache.match(CACHE_URL).then(function (response) {
+        caches.open(PWA_CHECK_CACHE_URL).then(function (cache) {
+          return cache.match(PWA_CHECK_CACHE_URL).then(function (response) {
             return response || new Response('{}');;
           }) || new Response('{}');
         })
